@@ -1,3 +1,3 @@
 # Homework-6
-#Making a change to the RMD file
-Hello RMD
+#Making changes to the RMD file
+#Trying again to make changes

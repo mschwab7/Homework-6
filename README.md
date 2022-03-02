@@ -1,4 +1,2 @@
 # Homework-6
-#Making changes to the RMD file
-#Trying again to make changes
-#Testing Testing
+Testing to see if I can pull changes from RStudio.

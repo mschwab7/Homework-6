@@ -9,6 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Introduction:
+Team Members: Matt Schwab
+GitHub Repository Link: https://github.com/mschwab7/Homework-6.git
+
+
+
+
+
+
+
+
 Start by loading in the happiness data and importing necessary libraries.
 ```{r}
 happy = readRDS("data/HAPPY.rds")
@@ -101,4 +112,38 @@ we must save the changed dataset.
 ```{r}
 saveRDS(happy, file = "HW6 rds")
 ```
+
+```{r}
+happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~DEGREE)
+happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~MARITAL)
+happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~SEX)
+happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~FINRELA)
+```
+We made a couple charts to explore the data. Now it is time to dig deeper.We want to find out how happiness is related to multiple variables. To do this, we want to treat happiness as a numeric variable, where a higher value corresponds to a higher level of happiness.
+
+```{r}
+levels(happy$HAPPY)
+```
+
+```{r}
+happy %>% group_by(FINRELA, HEALTH) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.fin = happy %>% group_by(FINRELA, HEALTH) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.fin %>% ggplot(aes(x = FINRELA, fill = HEALTH)) + geom_bar(aes(weight = m.happy),
+                                                              position = position_dodge())
+```
+Strangely enough, it seems that people with worse health tend to be more happy, and people with better health seem to be less happy. It looks like happiness levels don't change across health when financial relationship increases. So people in poor health with lots of money are about as happy as people in poor health with little money. 
+
+
+```{r}
+happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.mar = happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.mar %>% ggplot(aes(x = FINRELA, fill = MARITAL)) + geom_bar(aes(weight = m.happy2),
+                                                                  position = position_dodge())
+
+```
+
+It looks like people who are married tend to be the happiest, while people who are separated tend to be the least happy.It seems like for all people not including married people, happiness levels actually decline as income increases. This may suggest that as people get more money, they long for more companionship, and if they don't have it they are not happy. 
+
+
+
 

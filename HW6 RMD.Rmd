@@ -85,24 +85,25 @@ Marital should be reordered based on age.
 
 ```{r}
 levels(happy$DEGREE)
-levels(happy$DEGREE) = c("LT HIGH SCHOOL", "HIGH SCHOOL", "JUNIOR COLLEGE",
-                         "BACHELOR", "GRADUATE")
+levels(factor(happy$DEGREE, levels = c("LT HIGH SCHOOL", "HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR", "GRADUATE")))
 levels(happy$DEGREE)
 ```
 Now degree is reordered by prestige.
 
 ```{r}
 levels(happy$FINRELA)
-levels(happy$FINRELA) = c("FAR BELOW AVERAGE", "BELOW AVERAGE", "AVERAGE",
-                          "ABOVE AVERAGE", "FAR ABOVE AVERAGE")
+
+levels(factor(happy$FINRELA, levels = c("FAR BELOW AVERAGE", "BELOW AVERAGE", "AVERAGE", "ABOVE AVERAGE", "FAR ABOVE AVERAGE")))
+
 levels(happy$FINRELA)
 ```
 Now financial standing is ordered from lowest to highest.
 
 ```{r}
 levels(happy$HEALTH)
-levels(happy$HEALTH) = c("POOR", "FAIR", "GOOD", "EXCELLENT")
+happy$HEALTH = factor(happy$HEALTH, levels = c("POOR", "FAIR", "GOOD", "EXCELLENT"))
 levels(happy$HEALTH)
+
 ```
 Health is now reordered form worst health to best health.
 
@@ -145,5 +146,19 @@ happy.mar %>% ggplot(aes(x = FINRELA, fill = MARITAL)) + geom_bar(aes(weight = m
 It looks like people who are married tend to be the happiest, while people who are separated tend to be the least happy.It seems like for all people not including married people, happiness levels actually decline as income increases. This may suggest that as people get more money, they long for more companionship, and if they don't have it they are not happy. 
 
 
+```{r}
+happy %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy %>% group_by(SEX) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+```
+In general females seem to be slightly more happy than males, without taking 
+into consideration any other factors.
+
+```{r}
+happy %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy %>% group_by(FINRELA) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+```
+
+Does money on its own "buy" happiness? The data remains a bit unclear. The highest mean happiness is for people with far below average financial standing.
+This is then followed by people with far above average finances. This goes to show that money alone does not relate to happiness; happiness is dependent on the combination of the factors, not one factor on its own.
 
 

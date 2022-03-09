@@ -64,4 +64,4 @@ happy.fin %>% ggplot(aes(x = FINRELA, fill = HEALTH)) + geom_bar(aes(weight = m.
 happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
 happy.mar = happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
 happy.mar %>% ggplot(aes(x = FINRELA, fill = MARITAL)) + geom_bar(aes(weight = m.happy2),
-                                                                  position = position_dodge())
+                                                                  position = position_dodge()

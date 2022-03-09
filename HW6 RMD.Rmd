@@ -85,7 +85,7 @@ Marital should be reordered based on age.
 
 ```{r}
 levels(happy$DEGREE)
-levels(factor(happy$DEGREE, levels = c("LT HIGH SCHOOL", "HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR", "GRADUATE")))
+ levels(factor(happy$DEGREE, levels = c("LT HIGH SCHOOL", "HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR", "GRADUATE")))
 levels(happy$DEGREE)
 ```
 Now degree is reordered by prestige.

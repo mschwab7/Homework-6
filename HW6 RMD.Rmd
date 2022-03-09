@@ -9,4 +9,96 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Start by loading in the happiness data and importing necessary libraries.
+```{r}
+happy = readRDS("data/HAPPY.rds")
+str(happy)
+library(tidyverse)
+library(ggplot2)
+```
+
+Begin cleaning by replacing certain values with NA
+```{r}
+temp = happy %in% c("IAP", "DK", "NA")
+temp[1: 100]
+
+#Replace values with NA
+happy = replace(happy, happy == "IAP", NA)
+happy = replace(happy, happy == "DK", NA)
+happy = replace(happy, happy == "NA", NA)
+View(happy)
+```
+
+Now we need to clean the data by converting categorical variables into factors.
+Numerical variables must be converted to numerics.We also have to reorder some of the factor variables.
+
+```{r}
+#Replace "89 OR OLDER" with 89
+happy = replace(happy, happy == "89 OR OLDER", 89)
+happy$AGE = as.numeric(happy$AGE)
+str(happy)
+ggplot(happy, aes(x = AGE)) + geom_bar()
+```
+
+Looks like most of the people who were surveyed are in a younger demographic.
+
+```{r}
+#Change categorical columns into factors
+happy$YEAR = as.factor(happy$YEAR)
+```
+
+```{r}
+#Change multiple columns at once into factor variables
+happy$HAPPY = as.factor(happy$HAPPY)
+levels(happy$HAPPY)
+
+happy = happy %>% mutate(SEX = as.factor(SEX), MARITAL = as.factor(MARITAL), 
+                 DEGREE = as.factor(DEGREE), FINRELA = as.factor(FINRELA), 
+                 HEALTH = as.factor(HEALTH), PARTYID = as.factor(PARTYID),
+                 POLVIEWS = as.factor(POLVIEWS))
+```
+
+Now we have to reorder some factor variables.
+
+```{r}
+levels(happy$YEAR)
+```
+Year does not have to be reordered
+
+```{r}
+levels(happy$MARITAL)
+happy$MARITAL = reorder(happy$MARITAL, happy$AGE, fun = mean(), na.rm = TRUE)
+levels(happy$MARITAL)
+```
+Marital should be reordered based on age.
+
+```{r}
+levels(happy$DEGREE)
+levels(happy$DEGREE) = c("LT HIGH SCHOOL", "HIGH SCHOOL", "JUNIOR COLLEGE",
+                         "BACHELOR", "GRADUATE")
+levels(happy$DEGREE)
+```
+Now degree is reordered by prestige.
+
+```{r}
+levels(happy$FINRELA)
+levels(happy$FINRELA) = c("FAR BELOW AVERAGE", "BELOW AVERAGE", "AVERAGE",
+                          "ABOVE AVERAGE", "FAR ABOVE AVERAGE")
+levels(happy$FINRELA)
+```
+Now financial standing is ordered from lowest to highest.
+
+```{r}
+levels(happy$HEALTH)
+levels(happy$HEALTH) = c("POOR", "FAIR", "GOOD", "EXCELLENT")
+levels(happy$HEALTH)
+```
+Health is now reordered form worst health to best health.
+
+Now everything is reordered. It is time to start exploring the data. But first,
+we must save the changed dataset.
+
+```{r}
+saveRDS(happy, file = "HW6 rds")
+```
 

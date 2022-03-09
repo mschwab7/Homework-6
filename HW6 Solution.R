@@ -56,6 +56,12 @@ levels(happy$HEALTH)
 happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~DEGREE)
 happy %>% ggplot(aes(x = HAPPY)) + geom_bar() + facet_wrap(~MARITAL)
 
-happy.fin = happy %>% group_by(FINRELA, SEX) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
-happy.fin %>% ggplot(aes(x = FINRELA, fill = SEX)) + geom_bar(aes(weight = m.happy),
+happy %>% group_by(FINRELA, HEALTH) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.fin = happy %>% group_by(FINRELA, HEALTH) %>% summarise(m.happy = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.fin %>% ggplot(aes(x = FINRELA, fill = HEALTH)) + geom_bar(aes(weight = m.happy),
                                                               position = position_dodge())
+
+happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.mar = happy %>% group_by(MARITAL, FINRELA) %>% summarise(m.happy2 = mean(as.numeric(HAPPY), na.rm = TRUE))
+happy.mar %>% ggplot(aes(x = FINRELA, fill = MARITAL)) + geom_bar(aes(weight = m.happy2),
+                                                                  position = position_dodge())
